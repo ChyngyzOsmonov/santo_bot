@@ -95,7 +95,7 @@ def send_welcome(message):
     print(message.chat.id)
     bot.send_message(
         message.chat.id,
-        '''Добро пожаловать.\nПолезные команды для навигации:\nДля выхода в главное меню напишите /start
+        '''Добро пожаловать
         ''',
         reply_markup=main_button)
 
@@ -233,7 +233,7 @@ def user_reg_study(message):
     title = types.KeyboardButton(veb_title)
     keyboard.add(title)
 
-    msg = bot.send_message(message.chat.id, 'Нажмите кнопку для выбора названия курса', reply_markup=keyboard)
+    msg = bot.send_message(message.chat.id, 'Нажмите на кнопку для выбора названия курса', reply_markup=keyboard)
     bot.register_next_step_handler(msg, process_gender_step_study)
 
 
