@@ -233,7 +233,7 @@ def user_reg_study(message):
     title = types.KeyboardButton(veb_title)
     keyboard.add(title)
 
-    msg = bot.send_message(message.chat.id, 'Нажмите кнопку для выбора названия курса', reply_markup=keyboard)
+    msg = bot.send_message(message.chat.id, 'Нажмите на кнопку для выбора названия курса', reply_markup=keyboard)
     bot.register_next_step_handler(msg, process_gender_step_study)
 
 
@@ -326,9 +326,10 @@ def send_anytext(message):
 
             html = get_html('https://kaktus.media/')
             while True:
-                time.sleep(300)
+
 
                 def get_data_1(html):
+                    time.sleep(300)
                     try:
                         soup = BeautifulSoup(html, 'lxml')
                         ul = soup.find('ul', {'class': 'topic_list view_lenta 1'})
@@ -340,9 +341,8 @@ def send_anytext(message):
                     except:
                         print()
 
-                time.sleep(350)
-
                 def get_data(html):
+                    time.sleep(350)
                     try:
                         soup = BeautifulSoup(html, 'lxml')
                         ul = soup.find('ul', {'class': 'topic_list view_lenta 1'})
@@ -414,9 +414,9 @@ def send_anytext(message):
                     except:
                         title = ''
 
-                time.sleep(172900)
 
                 def veb2(html):
+                    time.sleep(172900)
                     soup = BeautifulSoup(html, 'lxml')
                     try:
                         title2 = soup.find('div',
