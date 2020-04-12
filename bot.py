@@ -326,9 +326,10 @@ def send_anytext(message):
 
             html = get_html('https://kaktus.media/')
             while True:
-                time.sleep(300)
+                
 
                 def get_data_1(html):
+                    time.sleep(300)
                     try:
                         soup = BeautifulSoup(html, 'lxml')
                         ul = soup.find('ul', {'class': 'topic_list view_lenta 1'})
@@ -340,9 +341,9 @@ def send_anytext(message):
                     except:
                         print()
 
-                time.sleep(350)
-
+                
                 def get_data(html):
+                    time.sleep(350)
                     try:
                         soup = BeautifulSoup(html, 'lxml')
                         ul = soup.find('ul', {'class': 'topic_list view_lenta 1'})
@@ -414,9 +415,8 @@ def send_anytext(message):
                     except:
                         title = ''
 
-                time.sleep(172900)
-
                 def veb2(html):
+                    time.sleep(172900)
                     soup = BeautifulSoup(html, 'lxml')
                     try:
                         title2 = soup.find('div',
@@ -427,11 +427,11 @@ def send_anytext(message):
                     except:
                         title2 = ''
 
-                a = veb1(html)
+                v1 = veb1(html)
                 print('a: {}'.format(a))
-                b = veb2(html)
+                v2 = veb2(html)
                 print('b: {}'.format(b))
-                if a == b:
+                if v1 == v2:
                     pass
                 else:
                     bot.send_message(message.chat.id, 'В разделе "Обучение" появился новый вебинар')
