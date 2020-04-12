@@ -329,7 +329,7 @@ def send_anytext(message):
                 
 
                 def get_data_1(html):
-                    time.sleep(300)
+                    time.sleep(350)
                     try:
                         soup = BeautifulSoup(html, 'lxml')
                         ul = soup.find('ul', {'class': 'topic_list view_lenta 1'})
@@ -343,7 +343,7 @@ def send_anytext(message):
 
                 
                 def get_data(html):
-                    time.sleep(350)
+                    time.sleep(300)
                     try:
                         soup = BeautifulSoup(html, 'lxml')
                         ul = soup.find('ul', {'class': 'topic_list view_lenta 1'})
@@ -405,7 +405,7 @@ def send_anytext(message):
             html = get_html('http://santo-pharm.kg/news')
             while True:
                 def veb1(html):
-                    time.sleep(172800)
+                    time.sleep(172900)
                     soup = BeautifulSoup(html, 'lxml')
                     try:
                         title = soup.find('div',
@@ -416,7 +416,7 @@ def send_anytext(message):
                         title = ''
 
                 def veb2(html):
-                    time.sleep(172900)
+                    time.sleep(172800)
                     soup = BeautifulSoup(html, 'lxml')
                     try:
                         title2 = soup.find('div',
