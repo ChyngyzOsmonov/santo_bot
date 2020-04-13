@@ -288,7 +288,7 @@ def send_anytext(message):
                 
 
                 def get_data_1(html):
-                    time.sleep(300)
+                    time.sleep(20)
                     try:
                         soup = BeautifulSoup(html, 'lxml')
                         ul = soup.find('ul', {'class': 'topic_list view_lenta 1'})
@@ -302,7 +302,7 @@ def send_anytext(message):
 
                 
                 def get_data(html):
-                    time.sleep(600)
+                    time.sleep(40)
                     try:
                         soup = BeautifulSoup(html, 'lxml')
                         ul = soup.find('ul', {'class': 'topic_list view_lenta 1'})
