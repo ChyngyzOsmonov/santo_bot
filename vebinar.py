@@ -49,6 +49,4 @@ def vebinar_link(html):
 veb_title = vebinar_title(html)
 veb_text = vebinar_text(html)
 veb_link = vebinar_link(html)
-print(veb_title)
-print(veb_text)
-print(veb_link)
+

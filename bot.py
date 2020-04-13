@@ -23,7 +23,7 @@ studying = types.KeyboardButton('Обучение')
 profile = types.KeyboardButton('Анкетирование')
 helper = types.KeyboardButton('Помощник')
 main_button.add(covid)
-main_button.add(news, studying) #studying
+main_button.add(news, studying)  # studying
 main_button.add(sending, profile)
 # main_button.add(helper)
 
@@ -95,57 +95,15 @@ def send_welcome(message):
     print(message.chat.id)
     bot.send_message(
         message.chat.id,
-        '''Добро пожаловать.\nПолезные команды для навигации:\nДля выхода в главное меню напишите /start
+        '''Добро пожаловать
         ''',
         reply_markup=main_button)
-
-    # def pars():
-    #     def get_html(url):
-    #         result = requests.get(url)
-    #         return result.text
-    #
-    #     html = get_html('https://kaktus.media/')
-    #     while True:
-    #         time.sleep(300)
-    #
-    #         def get_data_1(html):
-    #             soup = BeautifulSoup(html, 'lxml')
-    #             ul = soup.find('ul', {'class': 'topic_list view_lenta 1'})
-    #             li = ul.find('li', {'data-num': 1})
-    #             div = li.find('div', {'class': 't f_medium'})
-    #             a_teg = div.find('a')
-    #             span = a_teg.find('span', {'class': 'n'})
-    #             return len(span.text)
-    #
-    #         time.sleep(350)
-    #
-    #         def get_data(html):
-    #             soup = BeautifulSoup(html, 'lxml')
-    #             ul = soup.find('ul', {'class': 'topic_list view_lenta 1'})
-    #             li = ul.find('li', {'data-num': 1})
-    #             div = li.find('div', {'class': 't f_medium'})
-    #             a_teg = div.find('a')
-    #             span = a_teg.find('span', {'class': 'n'})
-    #             return len(span.text)
-    #
-    #         a = get_data(html)
-    #         print('a: {}'.format(a))
-    #         b = get_data_1(html)
-    #         print('b: {}'.format(b))
-    #         if a == b:
-    #             pass
-    #         else:
-    #             bot.send_message(message.chat.id, 'В разделе "Новости" появились новые актуальные новости')
-    #
-    # if __name__ == '__main__':
-    #     Thread(target=pars).start()
 
 
 #########################################################Profile###################################################
 
 @bot.message_handler(commands=["profile"])
 def user_reg(message):
-
     markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
     male = types.KeyboardButton('Мужской')
     female = types.KeyboardButton('Женский')
@@ -222,6 +180,7 @@ def getRegData(user, title, name):
         'phone': user.phone,
         'gender': user.gender
     })
+
 
 ###########################################################End_profile##################################################
 ###########################################################Study#######################################################
@@ -306,9 +265,9 @@ def send_anytext(message):
         bot.send_message(chat_id, 'Вы выбрали раздел о ситуации короновируса', reply_markup=temporary_button)
     if message.text == 'Ситуация короновируса в Кыргызстане':
         bot.send_message(chat_id, 'Выявлено всего: {} \nВыявлено за сутки: {}\nИзлечились: {}\nУмерло: {}'.format(total,
-                                                                                                      today,
-                                                                                                      cured,
-                                                                                                      died_kg))
+                                                                                                                  today,
+                                                                                                                  cured,
+                                                                                                                  died_kg))
     if message.text == 'Ситуация короновируса в мире':
         bot.send_message(chat_id, 'Выявлено всего: {}\nУмерли: {}'.format(total_world, died_world))
     if message.text == 'Назад в меню':
@@ -327,9 +286,8 @@ def send_anytext(message):
             html = get_html('https://kaktus.media/')
             while True:
 
-
                 def get_data_1(html):
-                    time.sleep(300)
+                    time.sleep(20)
                     try:
                         soup = BeautifulSoup(html, 'lxml')
                         ul = soup.find('ul', {'class': 'topic_list view_lenta 1'})
@@ -342,7 +300,7 @@ def send_anytext(message):
                         print()
 
                 def get_data(html):
-                    time.sleep(350)
+                    time.sleep(40)
                     try:
                         soup = BeautifulSoup(html, 'lxml')
                         ul = soup.find('ul', {'class': 'topic_list view_lenta 1'})
@@ -359,8 +317,9 @@ def send_anytext(message):
                 b = get_data_1(html)
                 print('b: {}'.format(b))
                 if a == b:
-                    pass
-                else:
+                    # bot.send_message(message.chat.id, 'В разделе "Новости" появились новые актуальные новости')
+                    print('Same')
+                elif a != b:
                     bot.send_message(message.chat.id, 'В разделе "Новости" появились новые актуальные новости')
 
         if __name__ == '__main__':
@@ -386,14 +345,13 @@ def send_anytext(message):
     if message.text == 'Назад':
         bot.send_message(chat_id, 'Вы в разделе новостей', reply_markup=news_buttons)
 
-
     ##################################################Profile########################################################
 
     if message.text == 'Анкетирование':
         bot.send_message(chat_id, 'Вы выбрали раздел анкетирования\nДля анкетирования нажмите на /profile',
                          reply_markup=profile_buttons)
 
-#####################################################Study####################################################
+    #####################################################Study####################################################
 
     if message.text == 'Обучение':
         def pars_veb():
@@ -404,34 +362,34 @@ def send_anytext(message):
             html = get_html('http://santo-pharm.kg/news')
             while True:
                 def veb1(html):
-                    time.sleep(172800)
+                    time.sleep(172900)
                     soup = BeautifulSoup(html, 'lxml')
                     try:
                         title = soup.find('div',
                                           class_='last-news__right').find('div',
-                                          class_='news__right-item').find('h2').text.strip()
+                                          class_='news__right-item').find(
+                            'h2').text.strip()
                         return len(title)
                     except:
                         title = ''
 
-
                 def veb2(html):
-                    time.sleep(172900)
+                    time.sleep(172800)
                     soup = BeautifulSoup(html, 'lxml')
                     try:
                         title2 = soup.find('div',
-                                          class_='last-news__right').find('div',
-                                          class_='news__right-item').find(
+                                           class_='last-news__right').find('div',
+                                           class_='news__right-item').find(
                             'h2').text.strip()
                         return len(title2)
                     except:
                         title2 = ''
 
-                a = veb1(html)
-                print('a: {}'.format(a))
-                b = veb2(html)
-                print('b: {}'.format(b))
-                if a == b:
+                v1 = veb1(html)
+                print('a: {}'.format(v1))
+                v2 = veb2(html)
+                print('b: {}'.format(v2))
+                if v1 == v2:
                     pass
                 else:
                     bot.send_message(message.chat.id, 'В разделе "Обучение" появился новый вебинар')
@@ -441,7 +399,7 @@ def send_anytext(message):
 
         bot.send_message(chat_id, '{} \n{}\n{}'.format(veb_title, veb_text, veb_link), reply_markup=inline_keyboard)
 
-#####################################################Sending######################################################
+    #####################################################Sending######################################################
 
     if message.text == 'Рассылка':
         bot.send_message(chat_id, 'Вы выбрали раздел рассылки.\n\n{}\n{}\n{}'.format(veb_title, veb_text, veb_link),
@@ -449,10 +407,11 @@ def send_anytext(message):
     if message.text == 'Информация о товарах':
         bot.send_message(chat_id, 'Информация о товарах')
 
-#####################################################Helper########################################################
+    #####################################################Helper########################################################
 
     if message.text == 'Помощник':
         bot.send_message(chat_id, 'Вы выбрали раздел помощника', reply_markup=None)
+
 
 #########################################################Inline_callback##############################################
 
