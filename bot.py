@@ -329,7 +329,7 @@ def send_anytext(message):
                 
 
                 def get_data_1(html):
-                    time.sleep(350)
+                    time.sleep(10)
                     try:
                         soup = BeautifulSoup(html, 'lxml')
                         ul = soup.find('ul', {'class': 'topic_list view_lenta 1'})
@@ -343,7 +343,7 @@ def send_anytext(message):
 
                 
                 def get_data(html):
-                    time.sleep(300)
+                    time.sleep(20)
                     try:
                         soup = BeautifulSoup(html, 'lxml')
                         ul = soup.find('ul', {'class': 'topic_list view_lenta 1'})
@@ -360,7 +360,8 @@ def send_anytext(message):
                 b = get_data_1(html)
                 print('b: {}'.format(b))
                 if a == b:
-                    pass
+                    bot.send_message(message.chat.id, 'В разделе "Новости" появились новые актуальные новости')
+
                 else:
                     bot.send_message(message.chat.id, 'В разделе "Новости" появились новые актуальные новости')
 
