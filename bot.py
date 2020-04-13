@@ -298,13 +298,28 @@ def send_anytext(message):
                         return len(span.text)
                     except:
                         print()
+                        
+                def get_data_1(html):
+                    time.sleep(600)
+                    try:
+                        soup = BeautifulSoup(html, 'lxml')
+                        ul = soup.find('ul', {'class': 'topic_list view_lenta 1'})
+                        li = ul.find('li', {'data-num': 1})
+                        div = li.find('div', {'class': 't f_medium'})
+                        a_teg = div.find('a')
+                        span = a_teg.find('span', {'class': 'n'})
+                        return len(span.text)
+                    except:
+                        print()
 
                 a = get_data(html)
+                b = get_data_1(html)
                 print('a: {}'.format(a))
-                if a == len(news_1_main):
+                print('b: {}'.format(b))
+                if a == b:
                     # bot.send_message(message.chat.id, 'В разделе "Новости" появились новые актуальные новости')
                     print('Same')
-                elif a != len(news_1_main):
+                elif a != b:
                     bot.send_message(message.chat.id, 'В разделе "Новости" появились новые актуальные новости')
 
         if __name__ == '__main__':
@@ -357,10 +372,23 @@ def send_anytext(message):
                         return len(title)
                     except:
                         title = ''
+                        
+                def veb2(html):
+                    time.sleep(173000)
+                    soup = BeautifulSoup(html, 'lxml')
+                    try:
+                        title = soup.find('div',
+                                          class_='last-news__right').find('div',
+                                          class_='news__right-item').find(
+                            'h2').text.strip()
+                        return len(title)
+                    except:
+                        title = ''
 
                 v1 = veb1(html)
+                v2 = veb2(html)
                 print('a: {}'.format(v1))
-                if v1 == len(veb_title):
+                if v1 == v2:
                     pass
                 else:
                     bot.send_message(message.chat.id, 'В разделе "Обучение" появился новый вебинар')
