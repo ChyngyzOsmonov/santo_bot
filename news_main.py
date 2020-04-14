@@ -192,6 +192,17 @@ def get_link_6(html):
     except:
         href = ''
 
+def get_data_2(html):
+    try:
+        soup = BeautifulSoup(html, 'lxml')
+        li = soup.find('li', {'class': 'topic_item clearfix', 'data-num': '1'})
+        a = li.find('a').get('href')
+        span = li.find('span', {'class': 'n'})
+        return (span.text + '\n' + a)
+    except:
+        print('Parse error')
+
+news_last = get_data_2(html)
 
 news_1_main = get_news_1(html)
 link_1_main = get_link_1(html)

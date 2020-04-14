@@ -12,6 +12,8 @@ import requests
 import time
 from threading import Thread
 from vebinar import *
+from parser import *
+
 
 bot = telebot.TeleBot(cfg.token)
 
@@ -65,7 +67,8 @@ reg = types.InlineKeyboardButton(text='Рагистрация на данный 
 inline_keyboard.add(reg)
 
 user_dict = {}
-
+users = []
+new = ''
 
 class User:
     def __init__(self, gender):
@@ -260,9 +263,20 @@ def getRegDataStudy(user_study, title, name):
 
 @bot.message_handler(content_types=["text"])
 def send_anytext(message):
+    global new
     chat_id = message.chat.id
     if message.text == 'Ситуация короновируса':
         bot.send_message(chat_id, 'Вы выбрали раздел о ситуации короновируса', reply_markup=temporary_button)
+
+        def pars():
+            while True:
+                time.sleep(28800)
+                bot.send_message(chat_id, f'Ситуация короновируса в Кыргызстане\nВыявлено всего: {total} '
+                                          f'\nВыявлено за сутки: {today}\nИзлечились: {cured}\nУмерло: {died_kg}'
+                                          f'\n\nСитуация короновируса в мире\nВыявлено всего: {total_world} '
+                                          f'\nУмерло: {died_world}')
+        if __name__ == '__main__':
+            Thread(target=pars).start()
     if message.text == 'Ситуация короновируса в Кыргызстане':
         bot.send_message(chat_id, 'Выявлено всего: {} \nВыявлено за сутки: {}\nИзлечились: {}\nУмерло: {}'.format(total,
                                                                                                                   today,
@@ -278,52 +292,29 @@ def send_anytext(message):
     if message.text == 'Новости':
         bot.send_message(chat_id, 'Вы выбрали раздел новостей', reply_markup=news_buttons)
 
-        def pars():
-            def get_html(url):
-                result = requests.get(url)
-                return result.text
-
-            html = get_html('https://kaktus.media/')
+        def pars_2():
+            global new
+            if chat_id not in users:
+                users.append(chat_id)
+                with open('users.txt', 'a+') as f:
+                    for line in f:
+                        if line == chat_id:
+                            pass
+                        else:
+                            f.write(str(chat_id) + '\n')
             while True:
-
-                def get_data(html):
-                    time.sleep(300)
-                    try:
-                        soup = BeautifulSoup(html, 'lxml')
-                        ul = soup.find('ul', {'class': 'topic_list view_lenta 1'})
-                        li = ul.find('li', {'data-num': 1})
-                        div = li.find('div', {'class': 't f_medium'})
-                        a_teg = div.find('a')
-                        span = a_teg.find('span', {'class': 'n'})
-                        return len(span.text)
-                    except:
-                        print()
-                        
-                def get_data_1(html):
-                    time.sleep(600)
-                    try:
-                        soup = BeautifulSoup(html, 'lxml')
-                        ul = soup.find('ul', {'class': 'topic_list view_lenta 1'})
-                        li = ul.find('li', {'data-num': 1})
-                        div = li.find('div', {'class': 't f_medium'})
-                        a_teg = div.find('a')
-                        span = a_teg.find('span', {'class': 'n'})
-                        return len(span.text)
-                    except:
-                        print()
-
-                a = get_data(html)
-                b = get_data_1(html)
-                print('a: {}'.format(a))
-                print('b: {}'.format(b))
-                if a == b:
-                    # bot.send_message(message.chat.id, 'В разделе "Новости" появились новые актуальные новости')
-                    print('Same')
-                elif a != b:
-                    bot.send_message(message.chat.id, 'В разделе "Новости" появились новые актуальные новости')
-
+                time.sleep(300)
+                opened = open('users.txt', 'r')
+                for line in opened:
+                    print(line)
+                    html = get_html('https://kaktus.media/')
+                    if new != get_data(html):
+                        bot.send_message(line, get_data(html))
+                        new = get_data(html)
+                        opened.closed
         if __name__ == '__main__':
-            Thread(target=pars).start()
+            Thread(target=pars_2).start()
+
     if message.text == 'Самые популярные новости':
         bot.send_message(chat_id, '{}\nЧитать по ссылке:\n{}'.format(news_1_main, link_1_main))
         bot.send_message(chat_id, '{}\nЧитать по ссылке:\n{}'.format(news_2_main, link_2_main))
@@ -354,47 +345,48 @@ def send_anytext(message):
     #####################################################Study####################################################
 
     if message.text == 'Обучение':
-        def pars_veb():
-            def get_html(url):
-                result = requests.get(url)
-                return result.text
-
-            html = get_html('http://santo-pharm.kg/news')
-            while True:
-                def veb1(html):
-                    time.sleep(172900)
-                    soup = BeautifulSoup(html, 'lxml')
-                    try:
-                        title = soup.find('div',
-                                          class_='last-news__right').find('div',
-                                          class_='news__right-item').find(
-                            'h2').text.strip()
-                        return len(title)
-                    except:
-                        title = ''
-                        
-                def veb2(html):
-                    time.sleep(173000)
-                    soup = BeautifulSoup(html, 'lxml')
-                    try:
-                        title = soup.find('div',
-                                          class_='last-news__right').find('div',
-                                          class_='news__right-item').find(
-                            'h2').text.strip()
-                        return len(title)
-                    except:
-                        title = ''
-
-                v1 = veb1(html)
-                v2 = veb2(html)
-                print('a: {}'.format(v1))
-                if v1 == v2:
-                    pass
-                else:
-                    bot.send_message(message.chat.id, 'В разделе "Обучение" появился новый вебинар')
-
-        if __name__ == '__main__':
-            Thread(target=pars_veb).start()
+        # def pars_veb():
+        #     def get_html(url):
+        #         result = requests.get(url)
+        #         return result.text
+        #
+        #     html = get_html('http://santo-pharm.kg/news')
+        #     while True:
+        #         def veb1(html):
+        #             time.sleep(172900)
+        #             soup = BeautifulSoup(html, 'lxml')
+        #             try:
+        #                 title = soup.find('div',
+        #                                   class_='last-news__right').find('div',
+        #                                                                   class_='news__right-item').find(
+        #                     'h2').text.strip()
+        #                 return len(title)
+        #             except:
+        #                 title = ''
+        #
+        #         def veb2(html):
+        #             time.sleep(173000)
+        #             soup = BeautifulSoup(html, 'lxml')
+        #             try:
+        #                 title = soup.find('div',
+        #                                   class_='last-news__right').find('div',
+        #                                                                   class_='news__right-item').find(
+        #                     'h2').text.strip()
+        #                 return len(title)
+        #             except:
+        #                 title = ''
+        #
+        #         v1 = veb1(html)
+        #         v2 = veb2(html)
+        #         print('a: {}'.format(v1))
+        #         if v1 == v2:
+        #             pass
+        #         else:
+        #             bot.send_message(message.chat.id, 'В разделе "Обучение" появился новый вебинар')
+        #
+        #
+        # if __name__ == '__main__':
+        #     Thread(target=pars_veb).start()
 
         bot.send_message(chat_id, '{} \n{}\n{}'.format(veb_title, veb_text, veb_link), reply_markup=inline_keyboard)
 
