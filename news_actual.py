@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-import threading
+from threading import Thread
 
 news_1 = ''
 
@@ -25,20 +25,15 @@ news_10 = ''
 
 def foo_all():
     global news_1, news_2, news_3, news_4, news_5, news_6, news_7, news_8, news_9, news_10
-    threading.Timer(54000, foo_all).start()
     url = 'https://kaktus.media/'
-
 
     def get_html(url):
         r = requests.get(url)
         return r.text
 
-
     html = get_html(url)
 
     # ########################################### 1 ##########################################################################
-
-
     def get_1_news(html):
         try:
             soup = BeautifulSoup(html, 'lxml')
@@ -50,9 +45,7 @@ def foo_all():
         except:
             href = ''
 
-
     #################################################### 2 ################################################################
-
     def get_2_news(html):
         try:
             soup = BeautifulSoup(html, 'lxml')
@@ -64,20 +57,6 @@ def foo_all():
             return a.text.strip() + '\n' + href
         except:
             href = ''
-
-
-    def get_2_links(html):
-        soup = BeautifulSoup(html, 'lxml')
-        try:
-            links = soup.find('div',
-                             class_='main--important-articles-chunk').find('div',
-                             class_='main--important-article').find_next('div',
-                             class_='main--important-article').find('a',
-                             class_='main--important-article-title').get('href')
-            return links
-        except:
-            links = ''
-
     ################################################ 3 ##################################################################
 
     def get_3_news(html):
@@ -110,8 +89,6 @@ def foo_all():
             href = ''
 
     ################################################## 5 ###############################################################
-
-
     def get_5_news(html):
         try:
             soup = BeautifulSoup(html, 'lxml')
@@ -129,7 +106,6 @@ def foo_all():
 
     #############################################6##########################################################################
 
-
     def get_6_news(html):
         try:
             soup = BeautifulSoup(html, 'lxml')
@@ -146,10 +122,7 @@ def foo_all():
         except:
             href = ''
 
-
     ##############################################7###################################################################
-
-
     def get_7_news(html):
         try:
             soup = BeautifulSoup(html, 'lxml')
@@ -167,9 +140,7 @@ def foo_all():
         except:
             href = ''
 
-
     ######################################################8############################################################
-
 
     def get_8_news(html):
         try:
@@ -252,4 +223,6 @@ def foo_all():
 
     news_10 = get_10_news(html)
 
-foo_all()
+
+if __name__ == '__main__':
+    Thread(target=foo_all).start()

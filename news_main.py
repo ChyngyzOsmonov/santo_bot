@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-import threading
+from threading import Thread
 
 news_1_main = ''
 
@@ -17,7 +17,6 @@ news_6_main = ''
 
 def foo():
     global news_last, news_1_main, news_2_main, news_3_main, news_4_main, news_5_main, news_6_main
-    threading.Timer(54000, foo).start()
     url = 'https://kaktus.media/'
 
     def get_html(url):
@@ -128,5 +127,5 @@ def foo():
     news_6_main = get_news_6(html)
 
 
-foo()
-
+if __name__ == '__main__':
+    Thread(target=foo).start()

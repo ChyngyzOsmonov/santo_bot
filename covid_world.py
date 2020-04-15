@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-import threading
+from threading import Thread
 
 total_world = ''
 died_world = ''
@@ -8,7 +8,6 @@ died_world = ''
 
 def foo_main():
     global total_world, died_world
-    threading.Timer(108000, foo_main).start()
     url = 'https://www.bbc.com/russian/news-51706538'
 
     def get_html(url):
@@ -40,4 +39,6 @@ def foo_main():
     died_world = get_died_world(html).replace('\xa0', ' ')
 
 
-foo_main()
+if __name__ == '__main__':
+    Thread(target=foo_main).start()
+

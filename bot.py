@@ -272,10 +272,12 @@ def send_anytext(message):
         def covid():
             while True:
                 time.sleep(108100)
-                bot.send_message(chat_id, f'Ситуация короновируса в Кыргызстане\n\nВыявлено всего: {total_kg} '
-                                          f'\nВыявлено за сутки: {today_kg}\nИзлечились: {cured_kg}'
-                                          f'\nУмерло: {died_kg}\n\nСитуация короновируса в мире'
-                                          f'\n\nВыявлено всего: {total_world}\nУмерли: {died_world}')
+                with open('users.txt', 'r') as file:
+                    for line in file:
+                        bot.send_message(line, f'Ситуация короновируса в Кыргызстане\n\nВыявлено всего: {total_kg} '
+                                                  f'\nВыявлено за сутки: {today_kg}\nИзлечились: {cured_kg}'
+                                                  f'\nУмерло: {died_kg}\n\nСитуация короновируса в мире'
+                                                  f'\n\nВыявлено всего: {total_world}\nУмерли: {died_world}')
 
         if __name__ == '__main__':
             Thread(target=covid).start()
@@ -286,7 +288,8 @@ def send_anytext(message):
                                                                                                          cured_kg,
                                                                                                          died_kg))
     if message.text == 'Ситуация короновируса в мире':
-        bot.send_message(chat_id, 'Выявлено всего: {}\nУмерли: {}'.format(total_world, died_world))
+        bot.send_message(chat_id, foo_main())
+        print(foo_main())
     if message.text == 'Назад в меню':
         bot.send_message(chat_id, 'Вы в главном меню', reply_markup=main_button)
 

@@ -1,17 +1,16 @@
 import requests
 from bs4 import BeautifulSoup
-import threading
+from threading import Thread
 
 total_kg = ''
 today_kg = ''
 cured_kg = ''
 died_kg = ''
 
+
 def foo():
     global total_kg, today_kg, cured_kg, died_kg
-    threading.Timer(5, foo).start()
     url = 'https://kaktus.media/'
-
 
     def get_html(url):
         r = requests.get(url)
@@ -32,7 +31,6 @@ def foo():
         except:
             total = ''
 
-
     def get_today(html):
         soup = BeautifulSoup(html, 'lxml')
 
@@ -45,7 +43,6 @@ def foo():
             return today
         except:
             today = ''
-
 
     def get_cured(html):
         soup = BeautifulSoup(html, 'lxml')
@@ -83,5 +80,7 @@ def foo():
     died_kg = get_died(html)
 
 
-foo()
+if __name__ == '__main__':
+    Thread(target=foo).start()
+
 
