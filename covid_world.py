@@ -1,30 +1,43 @@
 import requests
 from bs4 import BeautifulSoup
+import threading
 
-url = 'https://www.bbc.com/russian/news-51706538'
+total_world = ''
+died_world = ''
 
 
-def get_html(url):
-    r = requests.get(url)
-    return r.text
+def foo_main():
+    global total_world, died_world
+    threading.Timer(108000, foo_main).start()
+    url = 'https://www.bbc.com/russian/news-51706538'
 
-html = get_html(url)
+    def get_html(url):
+        r = requests.get(url)
+        return r.text
 
-def get_total_world(html):
-    soup = BeautifulSoup(html, 'lxml')
-    try:
-        total = soup.find('tr', class_='summary__body').find('td', class_='summary__infected gel-double-pica').text.strip()
-        return total
-    except:
-        total = ''
+    html = get_html(url)
 
-def get_died_world(html):
-    soup = BeautifulSoup(html, 'lxml')
-    try:
-        died = soup.find('tr', class_='summary__body').find('td', class_='summary__deceased gel-double-pica').text.strip()
-        return died
-    except:
-        died = ''
+    def get_total_world(html):
+        soup = BeautifulSoup(html, 'lxml')
+        try:
+            total = soup.find('tr', class_='summary__body').find('td',
+                                                                 class_='summary__infected gel-double-pica').text.strip()
+            return total
 
-total_world = get_total_world(html)
-died_world = get_died_world(html)
+        except:
+            total = ''
+
+    def get_died_world(html):
+        soup = BeautifulSoup(html, 'lxml')
+        try:
+            died = soup.find('tr', class_='summary__body').find('td',
+                                                                class_='summary__deceased gel-double-pica').text.strip()
+            return died
+        except:
+            died = ''
+
+    total_world = get_total_world(html).replace('\xa0', ' ')
+    died_world = get_died_world(html).replace('\xa0', ' ')
+
+
+foo_main()
