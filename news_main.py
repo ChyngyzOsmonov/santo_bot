@@ -2,18 +2,13 @@ import requests
 from bs4 import BeautifulSoup
 
 
-url = 'https://kaktus.media/'
-
-
 def get_html(url):
     r = requests.get(url)
     return r.text
 
 
-html = get_html(url)
-
 # ########################################### 1 ##########################################################################
-def get_news_1(html):
+def get_news_1_p(html):
     try:
         soup = BeautifulSoup(html, 'lxml')
         ul = soup.find('ul', {'class': 'topic_list view_lenta 1'})
@@ -29,7 +24,7 @@ def get_news_1(html):
 
 #################################################### 2 ################################################################
 
-def get_news_2(html):
+def get_news_2_p(html):
     try:
         soup = BeautifulSoup(html, 'lxml')
         ul = soup.find('ul', {'class': 'topic_list view_lenta 1'})
@@ -45,7 +40,7 @@ def get_news_2(html):
 
 ################################################ 3 ##################################################################
 
-def get_news_3(html):
+def get_news_3_p(html):
     try:
         soup = BeautifulSoup(html, 'lxml')
         ul = soup.find('ul', {'class': 'topic_list view_lenta 1'})
@@ -61,7 +56,7 @@ def get_news_3(html):
 
 #################################################### 4 ###############################################################
 
-def get_news_4(html):
+def get_news_4_p(html):
     try:
         soup = BeautifulSoup(html, 'lxml')
         ul = soup.find('ul', {'class': 'topic_list view_lenta 1'})
@@ -77,7 +72,7 @@ def get_news_4(html):
 
 ################################################## 5 ###############################################################
 
-def get_news_5(html):
+def get_news_5_p(html):
     try:
         soup = BeautifulSoup(html, 'lxml')
         ul = soup.find('ul', {'class': 'topic_list view_lenta 1'})
@@ -93,7 +88,7 @@ def get_news_5(html):
 
 ##################################################6##########################################################
 
-def get_news_6(html):
+def get_news_6_p(html):
     try:
         soup = BeautifulSoup(html, 'lxml')
         ul = soup.find('ul', {'class': 'topic_list view_lenta 1'})
@@ -107,15 +102,4 @@ def get_news_6(html):
         span = ''
 
 
-news_1_main = get_news_1(html)
-
-news_2_main = get_news_2(html)
-
-news_3_main = get_news_3(html)
-
-news_4_main = get_news_4(html)
-
-news_5_main = get_news_5(html)
-
-news_6_main = get_news_6(html)
 

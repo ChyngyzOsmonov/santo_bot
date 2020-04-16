@@ -1,13 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
 
-url = 'https://kaktus.media/'
 
 def get_html(url):
     r = requests.get(url)
     return r.text
 
-html = get_html(url)
 
 # ########################################### 1 ##########################################################################
 def get_1_news(html):
@@ -179,22 +177,4 @@ def get_10_news(html):
     except:
         href = ''
 
-news_1 = get_1_news(html)
 
-news_2 = get_2_news(html)
-
-news_3 = get_3_news(html)
-
-news_4 = get_4_news(html)
-
-news_5 = get_5_news(html)
-
-news_6 = get_6_news(html)
-
-news_7 = get_7_news(html)
-
-news_8 = get_8_news(html)
-
-news_9 = get_9_news(html)
-
-news_10 = get_10_news(html)
