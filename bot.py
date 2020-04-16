@@ -288,8 +288,7 @@ def send_anytext(message):
                                                                                                          cured_kg,
                                                                                                          died_kg))
     if message.text == 'Ситуация короновируса в мире':
-        bot.send_message(chat_id, foo_main())
-        print(foo_main())
+        bot.send_message(chat_id, 'Выявлено всего: {} \nУмерло: {}'.format(total_world, died_world))
     if message.text == 'Назад в меню':
         bot.send_message(chat_id, 'Вы в главном меню', reply_markup=main_button)
 
