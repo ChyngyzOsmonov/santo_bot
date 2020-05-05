@@ -22,11 +22,11 @@ news = types.KeyboardButton('Новости')
 sending = types.KeyboardButton('Рассылка')
 studying = types.KeyboardButton('Обучение')
 profile = types.KeyboardButton('Анкетирование')
-helper = types.KeyboardButton('Помощник')
+test = types.KeyboardButton('Тестирование')
 main_button.add(covid)
-main_button.add(news, studying)  # studying
+main_button.add(news, studying)
 main_button.add(sending, profile)
-# main_button.add(helper)
+main_button.add(test)
 
 temporary_button = types.ReplyKeyboardMarkup(resize_keyboard=True)
 covid_kg = types.KeyboardButton('Ситуация короновируса в Кыргызстане')
@@ -36,10 +36,10 @@ temporary_button.add(covid_kg)
 temporary_button.add(covid_world)
 temporary_button.add(back)
 
-sending_buttons = types.ReplyKeyboardMarkup(resize_keyboard=True)
-catalog = types.KeyboardButton('Информация о товарах')
-# sending_buttons.add(catalog)
-sending_buttons.add(back)
+testing_buttons = types.ReplyKeyboardMarkup(resize_keyboard=True)
+testing = types.KeyboardButton('Пройти тестирование на знание препаратов')
+testing_buttons.add(testing)
+testing_buttons.add(back)
 
 news_buttons = types.ReplyKeyboardMarkup(resize_keyboard=True)
 news_popular = types.KeyboardButton('Самые популярные новости')
@@ -307,6 +307,8 @@ def send_anytext(message):
             if chat_id not in users:
                 with open('users.txt', 'a+') as f:
                     f.write(str(chat_id) + '\n')
+            else:
+                pass
             while True:
                 time.sleep(300)
                 with open('users.txt', 'r') as file:
@@ -366,12 +368,12 @@ def send_anytext(message):
         bot.send_message(chat_id, 'Вы выбрали раздел рассылки.\n\n{}\n{}\n{}'.format(vebinar_title(html_veb),
                                                                                       vebinar_text(html_veb),
                                                                                       vebinar_link(html_veb),
-                                                                                     reply_markup=sending_buttons))
+                                                                                     reply_markup=main_button))
 
         def sending_veb():
             global new_sending
             while True:
-                time.sleep(259300)
+                time.sleep(7200)
                 with open('users.txt', 'r') as f_opened:
                     for x in f_opened:
                         html_veb = get_html('http://santo-pharm.kg/news')
@@ -385,8 +387,11 @@ def send_anytext(message):
         if __name__ == '__main__':
             Thread(target=sending_veb).start()
 
-    if message.text == 'Информация о товарах':
-        bot.send_message(chat_id, 'Информация о товарах')
+    if message.text == 'Тестирование':
+        bot.send_message(chat_id, 'Вы в разделе тестирования', reply_markup=testing_buttons)
+    if message.text == 'Пройти тестирование на знание препаратов':
+        bot_link = 'Для перехода на тест нажмите на @SantoTestBot'
+        bot.send_message(chat_id, bot_link, reply_markup=main_button)
 
     #####################################################Helper########################################################
 
