@@ -101,6 +101,7 @@ def get_something(message):
         user_mailing.something = message.text
 
         for user in joinedUsers:
+            time.sleep(0.4)
             bot.send_message(user, get_mailing(user_mailing), parse_mode="HTML")
 
     except Exception as e:
