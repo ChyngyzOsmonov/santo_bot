@@ -1,5 +1,5 @@
 #!/bin/sh
-'''exec' "/home/chyngyz/Рабочий стол/MadBot/env/bin/python3" "$0" "$@"
+'''exec' "/home/chyngyz/Рабочий стол/Chyngyz_ubuntu/bot/Santo's bot/MadBot/env/bin/python3" "$0" "$@"
 ' '''
 # -*- coding: utf-8 -*-
 import re

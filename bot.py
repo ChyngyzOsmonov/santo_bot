@@ -1,69 +1,38 @@
 import telebot
 import cfg
-from telebot import types
 from covid_kg import *
 from covid_world import *
 from string import Template
 import csv
 from news_main import *
 from news_actual import *
-from bs4 import BeautifulSoup
-import requests
 import time
 from threading import Thread
 from vebinar import *
 from parser import *
+from keyboards import *
 
 bot = telebot.TeleBot(cfg.token)
 
-main_button = types.ReplyKeyboardMarkup(resize_keyboard=True)
-covid = types.KeyboardButton('Ситуация короновируса')
-news = types.KeyboardButton('Новости')
-sending = types.KeyboardButton('Рассылка')
-studying = types.KeyboardButton('Обучение')
-profile = types.KeyboardButton('Анкетирование')
-test = types.KeyboardButton('Тестирование')
-main_button.add(covid)
-main_button.add(news, studying)
-main_button.add(sending, profile)
-main_button.add(test)
+m_file = open('users.txt', 'r')
+joinedUsers = set()
 
-temporary_button = types.ReplyKeyboardMarkup(resize_keyboard=True)
-covid_kg = types.KeyboardButton('Ситуация короновируса в Кыргызстане')
-covid_world = types.KeyboardButton('Ситуация короновируса в мире')
-back = types.KeyboardButton('Назад в меню')
-temporary_button.add(covid_kg)
-temporary_button.add(covid_world)
-temporary_button.add(back)
+for line in m_file:
+    joinedUsers.add(line.strip())
+m_file.close()
 
-testing_buttons = types.ReplyKeyboardMarkup(resize_keyboard=True)
-testing = types.KeyboardButton('Пройти тестирование на знание препаратов')
-testing_buttons.add(testing)
-testing_buttons.add(back)
+user_dict_mailing = {}
 
-news_buttons = types.ReplyKeyboardMarkup(resize_keyboard=True)
-news_popular = types.KeyboardButton('Самые популярные новости')
-news = types.KeyboardButton('Все новости')
-news_buttons.add(news_popular, news)
-news_buttons.add(back)
 
-back_button = types.ReplyKeyboardMarkup(resize_keyboard=True)
-back_to = types.KeyboardButton('Назад')
-back_button.add(back_to)
+class UserMailing:
 
-next_news_buttons = types.ReplyKeyboardMarkup(resize_keyboard=True)
-other_news = types.KeyboardButton('Еще новости')
-next_news_buttons.add(other_news)
-next_news_buttons.add(back_to)
+    def __init__(self, text):
+        self.text = text
+        keys = ['something']
 
-profile_buttons = types.ReplyKeyboardMarkup(resize_keyboard=True)
-registration = types.KeyboardButton('/profile')
-profile_buttons.add(registration)
-profile_buttons.add(back)
+        for key in keys:
+            self.key = None
 
-inline_keyboard = types.InlineKeyboardMarkup()
-reg = types.InlineKeyboardButton(text='Рагистрация на данный курс', callback_data='regis')
-inline_keyboard.add(reg)
 
 user_dict = {}
 users = []
@@ -100,14 +69,51 @@ class UserStudy:
 def send_welcome(message):
     print(message.chat.id)
     bot.send_message(
-        message.chat.id,
-        '''Добро пожаловать
-        ''',
+        message.chat.id, 'Добро пожаловать',
         reply_markup=main_button)
 
 
-#########################################################Profile###################################################
+##############################################################################################################
+@bot.message_handler(commands=["mailing"])
+def mailing_start(message):
 
+    msg = bot.send_message(message.chat.id, 'Напишите название рассылки')
+    bot.register_next_step_handler(msg, get_text)
+
+
+def get_text(message):
+    try:
+        chat_id = message.chat.id
+        user_dict_mailing[chat_id] = UserMailing(message.text)
+
+        msg = bot.send_message(chat_id, 'Напишите текст рассылки')
+        bot.register_next_step_handler(msg, get_something)
+
+    except Exception as e:
+        print(e)
+        bot.reply_to(message, 'Повторите еще раз')
+
+
+def get_something(message):
+    try:
+        chat_id = message.chat.id
+        user_mailing = user_dict_mailing[chat_id]
+        user_mailing.something = message.text
+
+        for user in joinedUsers:
+            bot.send_message(user, get_mailing(user_mailing), parse_mode="HTML")
+
+    except Exception as e:
+        print(e)
+        bot.reply_to(message, 'Повторите попытку')
+
+
+def get_mailing(user_mailing):
+    text = '<b>{text}</b>\n{something}'.format(text=user_mailing.text, something=user_mailing.something)
+    return text
+
+
+#########################################################Profile###################################################
 @bot.message_handler(commands=["profile"])
 def user_reg(message):
     markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
@@ -363,40 +369,35 @@ def send_anytext(message):
 
     #####################################################Sending######################################################
 
-    if message.text == 'Рассылка':
-        html_veb = get_html('http://santo-pharm.kg/news')
-        bot.send_message(chat_id, 'Вы выбрали раздел рассылки.\n\n{}\n{}\n{}'.format(vebinar_title(html_veb),
-                                                                                      vebinar_text(html_veb),
-                                                                                      vebinar_link(html_veb),
-                                                                                     reply_markup=main_button))
+    # if message.text == 'Рассылка':
+    #     html_veb = get_html('http://santo-pharm.kg/news')
+    #     bot.send_message(chat_id, 'Вы выбрали раздел рассылки.\n\n{}\n{}\n{}'.format(vebinar_title(html_veb),
+    #                                                                                   vebinar_text(html_veb),
+    #                                                                                   vebinar_link(html_veb),
+    #                                                                                  reply_markup=main_button))
 
-        def sending_veb():
-            global new_sending
-            while True:
-                time.sleep(7200)
-                with open('users.txt', 'r') as f_opened:
-                    for x in f_opened:
-                        html_veb = get_html('http://santo-pharm.kg/news')
-                        print(x)
-                        if new_sending != vebinar_title(html_veb):
-                            bot.send_message(x, 'Новый вебинар:\n\n{}\n{}\n{}'.format(vebinar_title(html_veb),
-                                                                                      vebinar_text(html_veb),
-                                                                                      vebinar_link(html_veb)))
-                            new_sending = vebinar_title(html_veb)
+    #     def sending_veb():
+    #         global new_sending
+    #         while True:
+    #             time.sleep(7200)
+    #             with open('users.txt', 'r') as f_opened:
+    #                 for x in f_opened:
+    #                     html_veb = get_html('http://santo-pharm.kg/news')
+    #                     print(x)
+    #                     if new_sending != vebinar_title(html_veb):
+    #                         bot.send_message(x, 'Новый вебинар:\n\n{}\n{}\n{}'.format(vebinar_title(html_veb),
+    #                                                                                   vebinar_text(html_veb),
+    #                                                                                   vebinar_link(html_veb)))
+    #                         new_sending = vebinar_title(html_veb)
 
-        if __name__ == '__main__':
-            Thread(target=sending_veb).start()
+    #     if __name__ == '__main__':
+    #         Thread(target=sending_veb).start()
 
     if message.text == 'Тестирование':
         bot.send_message(chat_id, 'Вы в разделе тестирования', reply_markup=testing_buttons)
     if message.text == 'Пройти тестирование на знание препаратов':
         bot_link = 'Для перехода на тест нажмите на @SantoTestBot'
         bot.send_message(chat_id, bot_link, reply_markup=main_button)
-
-    #####################################################Helper########################################################
-
-    if message.text == 'Помощник':
-        bot.send_message(chat_id, 'Вы выбрали раздел помощника', reply_markup=None)
 
 
 #########################################################Inline_callback##############################################
