@@ -1,2 +1,2 @@
-token = '877622096:AAH_0uJNvUMB1HMLSx2iurT9Qy2qXlaqnH8'#'800260696:AAFrpTtFzQt1f-9a7gOzE1E3iXbuGrDcPeM'
+token = '800260696:AAFrpTtFzQt1f-9a7gOzE1E3iXbuGrDcPeM'
 sending_chat_id = '1060428622'
